@@ -16267,12 +16267,14 @@ class CircleCIPipelineTrigger {
         this.repo = repo;
         this.url = `https://${this.host}/api/v2/project/${this.vcs}/${this.owner}/${this.repo}/pipeline`;
         this.metaData = (0, core_1.getInput)("GHA_Meta");
+        this.emailData = (0, core_1.getInput)("GHA_Email");
         this.tag = this.getTag();
         this.branch = this.getBranch();
         this.parameters = {
             GHA_Actor: context.actor,
             GHA_Action: context.action,
             GHA_Event: context.eventName,
+            GHA_Email: this.emailData,
         };
     }
     parseSlug(slug) {
@@ -16316,6 +16318,9 @@ class CircleCIPipelineTrigger {
         (0, core_1.info)(`Repo: ${this.repo}`);
         if (this.metaData.length > 0) {
             this.parameters.GHA_Meta = this.metaData;
+        }
+        if (this.emailData.length > 0) {
+            this.parameters.GHA_Email = this.emailData;
         }
         body[this.tag ? "tag" : "branch"] = this.tag || this.branch;
         (0, core_1.info)(`Triggering CircleCI Pipeline for ${this.owner}/${this.repo}`);

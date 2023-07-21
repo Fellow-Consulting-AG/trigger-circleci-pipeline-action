@@ -35,14 +35,14 @@ export class CircleCIPipelineTrigger {
     this.repo = repo;
     this.url = `https://${this.host}/api/v2/project/${this.vcs}/${this.owner}/${this.repo}/pipeline`;
     this.metaData = getInput("GHA_Meta");
-    this.emailData = getInput("GHA_Meta");
+    this.emailData = getInput("GHA_Email");
     this.tag = this.getTag();
     this.branch = this.getBranch();
     this.parameters = {
       GHA_Actor: context.actor,
       GHA_Action: context.action,
       GHA_Event: context.eventName,
-      GHA_Email: context.emailData,
+      GHA_Email: this.emailData,
     };
   }
 
