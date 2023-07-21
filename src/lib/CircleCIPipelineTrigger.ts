@@ -20,6 +20,7 @@ export class CircleCIPipelineTrigger {
   context: Context;
   url: string;
   metaData: string;
+  emailData: string;
   parameters: CircleCIPipelineParams;
 
   constructor(context: Context, host = process.env.CCI_HOST || "circleci.com") {
@@ -34,6 +35,7 @@ export class CircleCIPipelineTrigger {
     this.repo = repo;
     this.url = `https://${this.host}/api/v2/project/${this.vcs}/${this.owner}/${this.repo}/pipeline`;
     this.metaData = getInput("GHA_Meta");
+    this.emailData = getInput("GHA_Meta");
     this.tag = this.getTag();
     this.branch = this.getBranch();
     this.parameters = {
@@ -89,6 +91,9 @@ export class CircleCIPipelineTrigger {
     if (this.metaData.length > 0) {
       this.parameters.GHA_Meta = this.metaData;
     }
+    if (this.emailData.length > 0) {
+      this.parameters.GHA_Email = this.emailData;
+    }
     body[this.tag ? "tag" : "branch"] = this.tag || this.branch;
     info(`Triggering CircleCI Pipeline for ${this.owner}/${this.repo}`);
     info(`  Triggering URL: ${this.url}`);
@@ -128,6 +133,7 @@ type CircleCIPipelineParams = {
   GHA_Action: string;
   GHA_Event: string;
   GHA_Meta?: string;
+  GHA_Email?: string;
 };
 
 type CircleCITriggerPipelineRequest = {
