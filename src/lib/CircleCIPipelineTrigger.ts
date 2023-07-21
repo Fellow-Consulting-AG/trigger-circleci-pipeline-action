@@ -42,6 +42,7 @@ export class CircleCIPipelineTrigger {
       GHA_Actor: context.actor,
       GHA_Action: context.action,
       GHA_Event: context.eventName,
+      GHA_Email: context.emailData,
     };
   }
 
